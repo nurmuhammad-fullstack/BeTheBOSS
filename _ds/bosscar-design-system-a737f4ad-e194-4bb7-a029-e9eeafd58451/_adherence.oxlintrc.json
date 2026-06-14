@@ -1,0 +1,162 @@
+{
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "rules": {
+    "react/forbid-elements": [
+      "warn",
+      {
+        "forbid": []
+      }
+    ],
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": [
+          {
+            "group": [
+              "ui_kits/website/**"
+            ],
+            "message": "Import design-system components from 'index.js', not component internals."
+          }
+        ]
+      }
+    ],
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "Literal[value=/#[0-9a-fA-F]{3,8}\\b/]",
+        "message": "Raw hex color — use a design-system color token via var()."
+      },
+      {
+        "selector": "Literal[value=/\\b\\d+px\\b/]",
+        "message": "Raw px value — use a design-system spacing token via var()."
+      },
+      {
+        "selector": "Literal[value=/font-family\\s*:\\s*(?!['\\\"]?(?:Fugaz One|Jockey One|League Spartan|Italiana|Jim Nightshade|Hind|JetBrains Mono))/i]",
+        "message": "Font not provided by the design system. Available: Fugaz One, Jockey One, League Spartan, Italiana, Jim Nightshade, Hind, JetBrains Mono."
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/index.js"
+      ],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ],
+  "x-omelette": {
+    "components": {},
+    "tokens": [
+      "--black",
+      "--body-lh",
+      "--body-size",
+      "--fg",
+      "--fg-dim",
+      "--fg-faint",
+      "--fg-muted",
+      "--font-display",
+      "--font-hand",
+      "--font-head",
+      "--font-mono",
+      "--font-script",
+      "--font-ui",
+      "--glow-gold",
+      "--gold",
+      "--gold-100",
+      "--gold-300",
+      "--gold-500",
+      "--gold-600",
+      "--gold-700",
+      "--gold-900",
+      "--h1-lh",
+      "--h1-size",
+      "--h2-lh",
+      "--h2-size",
+      "--h3-lh",
+      "--h3-size",
+      "--hero-lh",
+      "--hero-ls",
+      "--hero-size",
+      "--ink-700",
+      "--ink-800",
+      "--ink-900",
+      "--label-lh",
+      "--label-size",
+      "--line",
+      "--line-soft",
+      "--radius",
+      "--radius-lg",
+      "--radius-pill",
+      "--radius-sm",
+      "--shadow-card",
+      "--shadow-drop",
+      "--small-lh",
+      "--small-size",
+      "--title-lh",
+      "--title-size"
+    ],
+    "tokenKinds": {
+      "--gold-100": "color",
+      "--gold-300": "color",
+      "--gold": "color",
+      "--gold-500": "color",
+      "--gold-600": "color",
+      "--gold-700": "color",
+      "--gold-900": "color",
+      "--black": "color",
+      "--ink-900": "color",
+      "--ink-800": "color",
+      "--ink-700": "color",
+      "--line": "color",
+      "--line-soft": "color",
+      "--fg": "color",
+      "--fg-muted": "color",
+      "--fg-dim": "color",
+      "--fg-faint": "color",
+      "--shadow-drop": "shadow",
+      "--shadow-card": "shadow",
+      "--glow-gold": "shadow",
+      "--radius-sm": "radius",
+      "--radius": "radius",
+      "--radius-lg": "radius",
+      "--radius-pill": "radius",
+      "--font-display": "font",
+      "--font-head": "font",
+      "--font-ui": "font",
+      "--font-mono": "font",
+      "--font-script": "font",
+      "--font-hand": "font",
+      "--hero-size": "spacing",
+      "--hero-lh": "other",
+      "--hero-ls": "spacing",
+      "--h1-size": "spacing",
+      "--h1-lh": "other",
+      "--h2-size": "spacing",
+      "--h2-lh": "other",
+      "--h3-size": "spacing",
+      "--h3-lh": "other",
+      "--title-size": "spacing",
+      "--title-lh": "other",
+      "--body-size": "spacing",
+      "--body-lh": "other",
+      "--small-size": "spacing",
+      "--small-lh": "other",
+      "--label-size": "spacing",
+      "--label-lh": "other"
+    },
+    "fontFamilies": [
+      "Fugaz One",
+      "Hind",
+      "Italiana",
+      "JetBrains Mono",
+      "Jim Nightshade",
+      "Jockey One",
+      "League Spartan"
+    ]
+  }
+}

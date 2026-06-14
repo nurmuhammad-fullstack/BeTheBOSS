@@ -1,0 +1,86 @@
+/* ============================================================
+   BOSSCAR — Colors & Type
+   Luxury auto detailing studio · Tashkent, Uzbekistan
+   Dark + gold. Sourced from "Prestige Filter.fig" (Homepage 1080:2)
+   ============================================================ */
+
+/* --- Webfonts (Google Fonts) ---------------------------------
+   All Bosscar display/UI faces are available on Google Fonts.
+   SUBSTITUTIONS (flagged to user):
+     · "Iosevka Charon"  → JetBrains Mono   (mono descriptive copy)
+     · "Lao Sans Pro"    → League Spartan   (hero subhead)
+   ------------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Fugaz+One&family=Jockey+One&family=League+Spartan:wght@300;400;500;600;700&family=Italiana&family=Jim+Nightshade&family=Hind:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* ---------- Brand gold scale ---------- */
+  --gold-100: #FCEFC9;   /* faint wash */
+  --gold-300: #F9BF38;   /* deep gold — "hashamat va mukammallik" */
+  --gold:     #F1C767;   /* PRIMARY brand gold — titles, wordmark */
+  --gold-500: #FFBF00;   /* pure amber */
+  --gold-600: #FFA600;   /* bright amber — links, accents */
+  --gold-700: #FFA629;   /* amber-orange — outlines, glows */
+  --gold-900: #9C6606;   /* dark gold — pressed / on-light text */
+
+  /* ---------- Neutrals (dark-first) ---------- */
+  --black:    #000000;   /* page canvas */
+  --ink-900:  #0A0B0E;   /* near-black panels */
+  --ink-800:  #1A1C23;   /* elevated surface */
+  --ink-700:  #26282F;   /* cards / hairline fills */
+  --line:     #555555;   /* dividers, footer rule */
+  --line-soft: rgba(255,255,255,0.12);
+
+  /* ---------- Text ---------- */
+  --fg:       #FFFFFF;   /* primary text */
+  --fg-muted: #C8C8C8;   /* secondary text */
+  --fg-dim:   #999999;   /* body / descriptive gray */
+  --fg-faint: #6E6E6E;   /* captions, disabled */
+
+  /* ---------- Effects ---------- */
+  --shadow-drop: 0 4px 4px rgba(0,0,0,0.25);
+  --shadow-card: 0 18px 40px rgba(0,0,0,0.55);
+  --glow-gold:   0 0 36px rgba(255,166,41,0.35);
+  --radius-sm: 8px;
+  --radius:    16px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+
+  /* ---------- Type families ---------- */
+  --font-display: 'Fugaz One', system-ui, sans-serif;     /* hero wordmark, section heads */
+  --font-head:    'Jockey One', system-ui, sans-serif;    /* CTA / block headings */
+  --font-ui:      'League Spartan', system-ui, sans-serif;/* nav, labels, buttons, body */
+  --font-mono:    'JetBrains Mono', ui-monospace, monospace; /* descriptive copy, phone, meta */
+  --font-script:  'Italiana', Georgia, serif;             /* elegant accent ("Get in touch") */
+  --font-hand:    'Jim Nightshade', cursive;              /* handwritten micro-accent */
+
+  /* ---------- Semantic type tokens ---------- */
+  --hero-size: 96px;   --hero-lh: 0.95;  --hero-ls: 0.01em;
+  --h1-size:   46px;   --h1-lh:   1.05;
+  --h2-size:   44px;   --h2-lh:   1.2;
+  --h3-size:   32px;   --h3-lh:   1.1;
+  --title-size:24px;   --title-lh:1.0;   /* service titles (League Spartan) */
+  --body-size: 16px;   --body-lh: 1.85;
+  --small-size:15px;   --small-lh:1.6;
+  --label-size:16px;   --label-lh:1.0;
+}
+
+/* ============================================================
+   Semantic element styles  (apply with .bc- classes)
+   ============================================================ */
+.bc-hero {
+  font-family: var(--font-display);
+  font-size: var(--hero-size);
+  line-height: var(--hero-lh);
+  letter-spacing: var(--hero-ls);
+  color: var(--gold);
+  text-transform: none;
+}
+.bc-h1 { font-family: var(--font-head); font-size: var(--h1-size); line-height: var(--h1-lh); color: var(--fg); }
+.bc-h2 { font-family: var(--font-display); font-size: var(--h2-size); line-height: var(--h2-lh); color: var(--gold-600); letter-spacing: .01em; }
+.bc-h3 { font-family: var(--font-script); font-size: var(--h3-size); line-height: var(--h3-lh); color: var(--gold-300); }
+.bc-title { font-family: var(--font-ui); font-weight: 500; font-size: var(--title-size); line-height: var(--title-lh); color: var(--gold); }
+.bc-body { font-family: var(--font-mono); font-size: var(--body-size); line-height: var(--body-lh); color: var(--fg-dim); }
+.bc-ui   { font-family: var(--font-ui); font-size: var(--body-size); line-height: 1.4; color: var(--fg); }
+.bc-small{ font-family: var(--font-ui); font-size: var(--small-size); line-height: var(--small-lh); color: var(--fg-dim); }
+.bc-label{ font-family: var(--font-mono); font-size: var(--label-size); line-height: var(--label-lh); color: var(--fg); letter-spacing: .02em; }
+.bc-script { font-family: var(--font-script); color: var(--gold-300); }
