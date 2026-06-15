@@ -1,4 +1,4 @@
-import React, { useState as useState2, useEffect as useEffect2, useRef as useRef2 } from 'react';
+import React from 'react';
 import { useViewport } from './NavHero';
 
 const GALLERY_IMAGES = [
@@ -18,6 +18,19 @@ function GoldCorner({ pos }) {
     tr: { top: 10, right: 10, borderTop:    "2px solid rgba(255,166,41,.75)", borderRight:  "2px solid rgba(255,166,41,.75)" },
     bl: { bottom: 10, left: 10,  borderBottom: "2px solid rgba(255,166,41,.75)", borderLeft:   "2px solid rgba(255,166,41,.75)" },
     br: { bottom: 10, right: 10, borderBottom: "2px solid rgba(255,166,41,.75)", borderRight:  "2px solid rgba(255,166,41,.75)" },
+  };
+  return <div style={{ ...base, ...map[pos] }} />;
+}
+
+/* ── Gold frame bracket (image burchagini ramkalaydi, biroz tashqarida) ── */
+function CornerBracket({ pos }) {
+  const S = 110, off = -9, c = "rgba(245,200,90,.9)", bw = "2px", r = 22;
+  const base = { position: "absolute", width: S, height: S, zIndex: 6, pointerEvents: "none" };
+  const map = {
+    tl: { top: off, left: off, borderTop: `${bw} solid ${c}`, borderLeft: `${bw} solid ${c}`, borderTopLeftRadius: r },
+    tr: { top: off, right: off, borderTop: `${bw} solid ${c}`, borderRight: `${bw} solid ${c}`, borderTopRightRadius: r },
+    bl: { bottom: off, left: off, borderBottom: `${bw} solid ${c}`, borderLeft: `${bw} solid ${c}`, borderBottomLeftRadius: r },
+    br: { bottom: off, right: off, borderBottom: `${bw} solid ${c}`, borderRight: `${bw} solid ${c}`, borderBottomRightRadius: r },
   };
   return <div style={{ ...base, ...map[pos] }} />;
 }
@@ -69,104 +82,81 @@ const CELL_LAYOUT = [
 ];
 
 function FeaturedGallery({ isMobile }) {
-  const [order, setOrder] = useState2([0, 1, 2, 3, 4]);
-
-  useEffect2(() => {
-    const id = setInterval(() => {
-      setOrder((prev) => [...prev.slice(1), prev[0]]);
-    }, 4200);
-    return () => clearInterval(id);
-  }, []);
+  // Statik tartib — carousel (avtomatik aylanish) olib tashlandi
+  const order = [0, 1, 2, 3, 4];
 
   const gap = isMobile ? 18 : 24;
-  // Make featured height less than combined height of two stacked small images
   const featuredHeight = isMobile ? 320 : 500;
   const smallHeight = isMobile ? 130 : 250;
   const smallWidth = isMobile ? `calc((100% - ${gap}px) / 2)` : '232px';
-  const featuredWidth = isMobile ? '100%' : `calc(100% - ${smallWidth} * 2 - ${gap}px)`;
 
-  // dynamic sizing based on natural image aspect ratios
-  const containerRef = useRef2(null);
-  const [aspectRatios, setAspectRatios] = useState2(() => Array(GALLERY_IMAGES.length).fill(1));
-  const [smallHeightsPx, setSmallHeightsPx] = useState2(() => Array(GALLERY_IMAGES.length).fill(smallHeight));
-
-  useEffect2(() => {
-    // preload images to read natural aspect ratios
-    GALLERY_IMAGES.forEach((src, i) => {
-      const img = new Image();
-      img.src = src;
-      img.onload = () => {
-        setAspectRatios((prev) => {
-          const next = [...prev];
-          next[i] = img.naturalHeight / img.naturalWidth || 1;
-          return next;
-        });
-      };
-    });
-  }, []);
-
-  // compute small image heights in px whenever container width or aspect ratios change
-  useEffect2(() => {
-    const computeHeights = () => {
-      const el = containerRef.current;
-      if (!el) return;
-      const containerWidth = el.clientWidth;
-      const availableWidth = containerWidth - gap * 2; // two gaps between three columns
-      const smallWidthPx = availableWidth * 0.3; // 30% column width
-      const next = aspectRatios.map((r) => Math.max(80, Math.round(smallWidthPx * r)));
-      setSmallHeightsPx(next);
-    };
-    computeHeights();
-    window.addEventListener('resize', computeHeights);
-    return () => window.removeEventListener('resize', computeHeights);
-  }, [aspectRatios, gap]);
-
-  const slots = isMobile ? [
+  const slots = [
     { left: '0', top: '0', width: '100%', height: `${featuredHeight}px`, radius: 22, z: 2 },
     { left: '0', top: `calc(${featuredHeight}px + ${gap}px)`, width: smallWidth, height: `${smallHeight}px`, radius: 18, z: 1 },
     { left: `calc(${smallWidth} + ${gap}px)`, top: `calc(${featuredHeight}px + ${gap}px)`, width: smallWidth, height: `${smallHeight}px`, radius: 18, z: 1 },
     { left: '0', top: `calc(${featuredHeight}px + ${gap}px + ${smallHeight}px + ${gap}px)`, width: smallWidth, height: `${smallHeight}px`, radius: 18, z: 1 },
     { left: `calc(${smallWidth} + ${gap}px)`, top: `calc(${featuredHeight}px + ${gap}px + ${smallHeight}px + ${gap}px)`, width: smallWidth, height: `${smallHeight}px`, radius: 18, z: 1 },
-  ] : [
-    { left: '0', top: '0', width: featuredWidth, height: `${featuredHeight}px`, radius: 28, z: 2 },
-    { left: `calc(100% - ${smallWidth})`, top: '0', width: smallWidth, height: `${smallHeight}px`, radius: 18, z: 1 },
-    { left: `calc(100% - ${smallWidth})`, top: `calc(${smallHeight}px + ${gap}px)`, width: smallWidth, height: `${smallHeight}px`, radius: 18, z: 1 },
-    { left: `calc(100% - ${smallWidth} * 2 - ${gap}px)`, top: '0', width: smallWidth, height: `${smallHeight}px`, radius: 18, z: 1 },
-    { left: `calc(100% - ${smallWidth} * 2 - ${gap}px)`, top: `calc(${smallHeight}px + ${gap}px)`, width: smallWidth, height: `${smallHeight}px`, radius: 18, z: 1 },
   ];
 
-  const containerHeight = isMobile ? `calc(${featuredHeight}px + ${gap}px + ${smallHeight}px * 2 + ${gap}px)` : `${smallHeight * 2 + gap}px`;
+  const containerHeight = `calc(${featuredHeight}px + ${gap}px + ${smallHeight}px * 2 + ${gap}px)`;
 
-  return (
-    <div ref={containerRef} style={{ position: 'relative', minHeight: containerHeight, overflow: 'hidden' }}>
-      {!isMobile ? (
-        <div style={{ display: 'flex', gap: `${gap}px`, width: '100%', height: containerHeight }}>
-          {/* Left featured column (40%) */}
-          <div style={{ flex: '0 0 40%', borderRadius: 28, overflow: 'hidden', background: '#060708' }}>
-            <div style={{ width: '100%', height: '100%', backgroundImage: `url(${GALLERY_IMAGES[order[0]]})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
+  /* ── Desktop: figma layout — chapda featured rasm (oltin ramka bilan) +
+     o'ngda 2 ustun. Har bir rasm o'z tabiiy nisbatida (kesilmaydi). ── */
+  if (!isMobile) {
+    const cellOrder = [order[1], order[2], order[3], order[4]];
+    // Har bir rasm <img> sifatida — width 100%, height auto => o'z razmerida
+    const cell = (imgIdx, key, corner) => (
+      // Tashqi wrapper — overflow YO'Q, shunda burchak kesilmaydi.
+      <div key={key} style={{ position: 'relative' }}>
+        <div style={{
+          borderRadius: 18, overflow: 'hidden', background: '#0e0e10',
+          boxShadow: '0 14px 34px rgba(0,0,0,.32)',
+        }}>
+          <img src={GALLERY_IMAGES[imgIdx]} alt="" loading="lazy" style={{
+            width: '100%', height: 'auto', display: 'block',
+          }} />
+        </div>
+        {corner && <CornerBracket pos={corner} />}
+      </div>
+    );
+
+    return (
+      <div style={{ display: 'flex', gap: `${gap}px`, width: '100%', alignItems: 'flex-start' }}>
+        {/* Left featured — baland portret crop, diagonal oltin burchaklar (tl + br) */}
+        <div style={{ flex: '0 0 42%', position: 'relative' }}>
+          <div style={{
+            aspectRatio: '4 / 5', borderRadius: 24, overflow: 'hidden', background: '#0e0e10',
+            boxShadow: '0 24px 80px rgba(0,0,0,.45)',
+          }}>
+            <div style={{
+              width: '100%', height: '100%',
+              backgroundImage: `url(${GALLERY_IMAGES[order[0]]})`,
+              backgroundSize: 'cover', backgroundPosition: 'center',
+            }} />
           </div>
+          <CornerBracket pos="tl" />
+          <CornerBracket pos="br" />
+        </div>
 
-          {/* Middle column (30%) - two stacked images */}
-          <div style={{ flex: '0 0 30%', display: 'flex', flexDirection: 'column', gap: `${gap}px`, alignItems: 'stretch' }}>
-            <div style={{ height: `${smallHeightsPx[order[1]]}px`, borderRadius: 18, overflow: 'hidden', background: '#060708' }}>
-              <div style={{ width: '100%', height: '100%', backgroundImage: `url(${GALLERY_IMAGES[order[1]]})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
-            </div>
-            <div style={{ height: `${smallHeightsPx[order[3]]}px`, borderRadius: 18, overflow: 'hidden', background: '#060708' }}>
-              <div style={{ width: '100%', height: '100%', backgroundImage: `url(${GALLERY_IMAGES[order[3]]})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
-            </div>
+        {/* Right: 2 ustun (masonry) — har bir rasm o'z balandligida.
+           Oltin burchaklar: sochiq (tr) va bola (br) — figmadagidek */}
+        <div style={{ flex: 1, display: 'flex', gap: `${gap}px`, alignItems: 'flex-start' }}>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: `${gap}px` }}>
+            {cell(cellOrder[0], 'g0', null)}
+            {cell(cellOrder[2], 'g2', null)}
           </div>
-
-          {/* Right column (30%) - two stacked images */}
-          <div style={{ flex: '0 0 30%', display: 'flex', flexDirection: 'column', gap: `${gap}px`, alignItems: 'stretch' }}>
-            <div style={{ height: `${smallHeightsPx[order[2]]}px`, borderRadius: 18, overflow: 'hidden', background: '#060708' }}>
-              <div style={{ width: '100%', height: '100%', backgroundImage: `url(${GALLERY_IMAGES[order[2]]})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
-            </div>
-            <div style={{ height: `${smallHeightsPx[order[4]]}px`, borderRadius: 18, overflow: 'hidden', background: '#060708' }}>
-              <div style={{ width: '100%', height: '100%', backgroundImage: `url(${GALLERY_IMAGES[order[4]]})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
-            </div>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: `${gap}px` }}>
+            {cell(cellOrder[1], 'g1', 'tr')}
+            {cell(cellOrder[3], 'g3', 'br')}
           </div>
         </div>
-      ) : (
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ position: 'relative', minHeight: containerHeight, overflow: 'hidden' }}>
+      {(
         // Mobile: keep stacked mosaic behavior
         GALLERY_IMAGES.map((img, idx) => {
           const slotIndex = order.indexOf(idx);
@@ -208,7 +198,7 @@ function Gallery() {
   return (
     <section id="gallery" style={{
       maxWidth: 1180, margin: '0 auto',
-      padding: isMobile ? '20px 18px 80px' : '30px 56px 100px',
+      padding: isMobile ? '50px 18px 90px' : '80px 56px 120px',
     }}>
       <FeaturedGallery isMobile={isMobile} />
     </section>

@@ -2,15 +2,26 @@ import React, { useState, useEffect, useRef } from 'react';
 
 /* ── Viewport hook ── */
 function useViewport() {
-  const [w, setW] = useState(typeof window !== "undefined" ? window.innerWidth : 1280);
+  // Server va birinchi klient render bir xil bo'lishi uchun doim 1280 dan boshlanadi,
+  // haqiqiy o'lcham mount'dan keyin o'rnatiladi (hydration mismatch'ni oldini oladi).
+  const [w, setW] = useState(1280);
   useEffect(() => {
     const on = () => setW(window.innerWidth);
+    on();
     window.addEventListener("resize", on);
     return () => window.removeEventListener("resize", on);
   }, []);
   return { w, isMobile: w < 768, isTablet: w >= 768 && w < 1024 };
 }
 const telHref = (p) => "tel:" + p.replace(/[^+\d]/g, "");
+
+/* ── "Be the BOSS" hero yozuvi bilan bir xil oltin gradient matn ── */
+const GOLD_TEXT = {
+  background: "linear-gradient(180deg, #FCCF62 0%, #9C6606 100%)",
+  backgroundClip: "text",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+};
 
 /* ── Section IDs aligned with t.nav order ── */
 const NAV_IDS = ["services", "whyus", "about", "contact"];
@@ -141,13 +152,13 @@ function Nav({ t, lang, setLang }) {
         <div style={{ display: "flex", alignItems: "center", gap: 14, justifySelf: "end" }}>
           <a href={telHref(t.phone)} style={{
             border: "1px solid rgba(255,255,255,.5)", borderRadius: 10, height: 38, padding: "0 16px",
-            display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none",
+            display: "inline-flex", alignItems: "center", justifyContent: "center", textDecoration: "none",
             fontFamily: "var(--font-mono)", fontSize: 15, color: "#fff",
             letterSpacing: ".02em", whiteSpace: "nowrap", transition: "border-color .3s, color .3s",
           }}
             onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--gold)"; e.currentTarget.style.color = "var(--gold)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,.5)"; e.currentTarget.style.color = "#fff"; }}>
-            <i data-lucide="phone" style={{ width: 15, height: 15 }}></i>{t.phone}
+            {t.phone}
           </a>
           <LangToggle lang={lang} setLang={setLang} />
         </div>
@@ -358,42 +369,52 @@ function useSparkleCanvas(canvasRef) {
 
 /* ── Hero component ── */
 function Hero({ t }) {
-  const canvasRef    = useRef(null);
-  const [sy,         setSy]         = useState(0);
-  const [wheelAngle, setWheelAngle] = useState(0);
-  const prevSy   = useRef(0);
-  const angleAcc = useRef(0);
+  const canvasRef  = useRef(null);
+  const carRef     = useRef(null);
+  const wheelRefs  = useRef([]);
+  const hintRef    = useRef(null);
   const { isMobile } = useViewport();
 
-  /* Scroll handler: drift + wheel rotation */
+  /* Scroll → drift + g'ildirak aylanishi.
+     React state YO'Q — transformlar to'g'ridan-to'g'ri DOM'ga, rAF orqali
+     (har scrollда re-render bo'lmaydi => mobilda silliq, jank yo'q). */
   useEffect(() => {
-    const onScroll = () => {
-      const y     = window.scrollY || document.documentElement.scrollTop;
-      const delta = y - prevSy.current;                 // + = scrolling down
-      angleAcc.current += (delta * DRIFT_FACTOR / WHEEL_RADIUS) * RAD_TO_DEG;
-      prevSy.current = y;
-      setSy(y);
-      setWheelAngle(angleAcc.current);
+    let ticking = false;
+    let prevY = window.scrollY || document.documentElement.scrollTop || 0;
+    let angle = 0;
+    const maxDrift  = isMobile ? -120 : -420;
+    const driftFact = isMobile ? 0.32 : DRIFT_FACTOR;
+
+    const apply = () => {
+      const y = window.scrollY || document.documentElement.scrollTop || 0;
+      const delta = y - prevY;
+      angle += (delta * DRIFT_FACTOR / WHEEL_RADIUS) * RAD_TO_DEG;
+      prevY = y;
+      const drift = Math.max(maxDrift, -y * driftFact);
+      if (carRef.current) carRef.current.style.transform = `translateX(calc(-50% + ${drift}px))`;
+      const wheelTf = `translate(-50%, -50%) rotate(${angle}deg)`;
+      for (const el of wheelRefs.current) { if (el) el.style.transform = wheelTf; }
+      if (hintRef.current) hintRef.current.style.opacity = y > 60 ? "0" : "1";
+      ticking = false;
     };
+    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(apply); } };
+
     window.addEventListener("scroll", onScroll, { passive: true });
+    apply();   // boshlang'ich holat
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [isMobile]);
 
   /* Sparkle canvas */
   useSparkleCanvas(canvasRef);
 
-  /* Drift: right → left when scrolling down; reverses on scroll up */
-  const maxDrift  = isMobile ? -120 : -420;
-  const driftFact = isMobile ? 0.32 : DRIFT_FACTOR;
-  const drift     = Math.max(maxDrift, -sy * driftFact);
-  const carWidth  = isMobile ? "min(108%, 530px)" : "min(84%, 1040px)";
+  const carWidth = isMobile ? "min(90%, 420px)" : "min(84%, 1040px)";
 
-  /* Reusable wheel renderer */
-  const renderWheel = (w, angle, key) => (
-    <div key={key} style={{
+  /* Wheel renderer — elementlar ref orqali to'planadi, aylanish JS bilan beriladi */
+  const renderWheel = (w, key) => (
+    <div key={key} ref={(el) => { if (el) wheelRefs.current.push(el); }} style={{
       position: "absolute", left: w.left, top: w.top,
       width: WHEEL_SIZE, aspectRatio: "1 / 1",
-      transform: `translate(-50%, -50%) rotate(${angle}deg)`,
+      transform: "translate(-50%, -50%)",
       zIndex: 1,
     }}>
       <img src={w.src} alt="" style={{
@@ -402,6 +423,9 @@ function Hero({ t }) {
       }} />
     </div>
   );
+
+  // Har renderda wheel ref ro'yxatini tozalab qayta yig'amiz
+  wheelRefs.current = [];
 
   return (
     <section style={{ position: "relative", height: "100vh", overflow: "hidden", background: "#000" }}>
@@ -441,10 +465,7 @@ function Hero({ t }) {
         <h1 style={{
           fontFamily: "var(--font-display)",
           fontSize: "clamp(52px, 9.5vw, 106px)",
-          background: "linear-gradient(180deg, #FCCF62 0%, #9C6606 100%)",
-          backgroundClip: "text",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
+          ...GOLD_TEXT,
           margin: 0, lineHeight: .93,
           whiteSpace: isMobile ? "normal" : "nowrap",
         }}>
@@ -460,21 +481,21 @@ function Hero({ t }) {
       </div>
 
       {/* ══ Car + reflection (scroll-drifts) ══ */}
-      <div style={{
+      <div ref={carRef} style={{
         position: "absolute",
         left: "50%",
         bottom: isMobile ? "18%" : "10%",
         top:    isMobile ? "auto" : "auto",
         width:  carWidth,
-        transform: `translateX(calc(-50% + ${drift}px))`,
-        transition: "transform .08s linear",
+        transform: "translateX(-50%)",
         zIndex: 2,
+        willChange: "transform",
       }}>
         {/* ─ Car scene aspect-ratio box ─ */}
         <div style={{ position: "relative", width: "100%", aspectRatio: CAR_ASPECT }}>
 
           {/* Real wheel images — behind car body */}
-          {WHEELS.map((w, i) => renderWheel(w, wheelAngle, `w${i}`))}
+          {WHEELS.map((w, i) => renderWheel(w, `w${i}`))}
 
           {/* Car body PNG */}
           <img src="assets/car.png" alt="Bosscar"
@@ -508,7 +529,7 @@ function Hero({ t }) {
               aspectRatio: CAR_ASPECT,
               position: "absolute", top: 0, left: 0,
             }}>
-              {WHEELS.map((w, i) => renderWheel(w, wheelAngle, `wr${i}`))}
+              {WHEELS.map((w, i) => renderWheel(w, `wr${i}`))}
               <img src="assets/car.png" alt="" style={{
                 position: "absolute", inset: 0,
                 width: "100%", height: "100%",
@@ -542,11 +563,11 @@ function Hero({ t }) {
 
       {/* Scroll indicator */}
       {!isMobile && (
-        <div style={{
+        <div ref={hintRef} style={{
           position: "absolute", bottom: 26, left: "50%",
           transform: "translateX(-50%)",
           display: "flex", flexDirection: "column", alignItems: "center", gap: 8,
-          zIndex: 6, opacity: sy > 60 ? 0 : 1, transition: "opacity .6s",
+          zIndex: 6, opacity: 1, transition: "opacity .6s",
           pointerEvents: "none",
         }}>
           <div style={{ width: 1, height: 44,
@@ -561,4 +582,4 @@ function Hero({ t }) {
   );
 }
 
-export { Logo, Nav, Hero, WheelSVG, useViewport, telHref, LangToggle };
+export { Logo, Nav, Hero, WheelSVG, useViewport, telHref, LangToggle, GOLD_TEXT };

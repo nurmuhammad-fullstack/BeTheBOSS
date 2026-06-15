@@ -8,21 +8,27 @@ import { BC_I18N } from './i18n';
 function GoldDivider() {
   return (
     <div style={{
-      width: "100%", height: 40,
+      width: "100%", height: 80,
       background: "transparent",
     }} />
   );
 }
 
 function App() {
-  const [lang, setLang] = useStateApp(() => {
-    try { return localStorage.getItem("bc_lang") || "uz"; } catch { return "uz"; }
-  });
+  // Server bilan mos kelishi uchun "uz"dan boshlanadi; saqlangan til mount'dan keyin o'qiladi.
+  const [lang, setLang] = useStateApp("uz");
   const t = BC_I18N[lang];
   const [showModal, setShowModal] = useStateApp(false);
 
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
+
+  useEffectApp(() => {
+    try {
+      const saved = localStorage.getItem("bc_lang");
+      if (saved) setLang(saved);
+    } catch {}
+  }, []);
 
   useEffectApp(() => {
     try { localStorage.setItem("bc_lang", lang); } catch {}

@@ -8,7 +8,7 @@ export const BC_I18N = {
     aboutTitle: "BOSSCAR",
     aboutEpithet: "— hashamat va mukammallik uyg'unligi",
     aboutBody: "Bosscar 2022-yil 24-martda kichik orzudan boshlandi. Bir yarim yildan so'ng — 2023-yil 8-oktabrda esa o'z garajimiz eshiklarini ochdi.\nO'shandan beri 1000 dan ortiq avtomobil bizning qo'limizdan o'tdi va 50 ga yaqin mijoz bizni doimiy tanladi. Chunki biz har bir avtomobilga go'yo o'zimiznikidek munosabatda bo'lamiz.",
-    servicesTitle: "HAR BIR TAFSILOTDA — SEVGI",
+    servicesTitle: "HAR BIR TAFSILOTDA -SEVGI",
     servicesSub: "Avtomobilingizning o'ziga xos ehtiyojlariga moslashtirilgan maxsus detailing paketlari bilan hashamat olamiga sho'ng'ing.",
     services: [
       { name: "Kimyoviy tozalash", desc: "Avtomobilingizni puxta qo'l yuvish va mum qoplash bilan parvarish qiling." },
@@ -35,7 +35,7 @@ export const BC_I18N = {
     ctaLink: "Ariza qoldirish",
     footerTag: "Professional darajada parvarishlangan avtomobilning nufuzini his eting — har bir tafsilotda nafosat va mukammallik.",
     footerColA: ["Website", "Xizmatlar", "Narxlar", "Biz haqimizda"],
-    footerColB: ["Email yozing", "Facebook", "Instagram", "Twitter", "Youtube"],
+    footerColB: ["Email yozing", "Instagram", "Telegram", "Youtube"],
     copyright: "Bosscar © 2026"
   },
   ru: {
@@ -46,7 +46,7 @@ export const BC_I18N = {
     aboutTitle: "BOSSCAR",
     aboutEpithet: "— гармония роскоши и совершенства",
     aboutBody: "Bosscar начался 24 марта 2022 года с небольшой мечты. Спустя полтора года — 8 октября 2023 — мы открыли двери собственного гаража.\nС тех пор через наши руки прошло более 1000 автомобилей, а около 50 клиентов выбрали нас постоянными. Ведь к каждому автомобилю мы относимся как к своему.",
-    servicesTitle: "В КАЖДОЙ ДЕТАЛИ — ЛЮБОВЬ",
+    servicesTitle: "В КАЖДОЙ ДЕТАЛИ -ЛЮБОВЬ",
     servicesSub: "Погрузитесь в мир роскоши с детейлинг-пакетами, подобранными под индивидуальные потребности вашего автомобиля.",
     services: [
       { name: "Химчистка", desc: "Бережный ручной уход за автомобилем с мойкой и нанесением воска." },
@@ -73,7 +73,7 @@ export const BC_I18N = {
     ctaLink: "Оставить заявку",
     footerTag: "Почувствуйте престиж автомобиля, ухоженного на профессиональном уровне — изящество и совершенство в каждой детали.",
     footerColA: ["Сайт", "Услуги", "Цены", "О нас"],
-    footerColB: ["Напишите email", "Facebook", "Instagram", "Twitter", "Youtube"],
+    footerColB: ["Напишите email", "Instagram", "Telegram", "Youtube"],
     copyright: "Bosscar © 2026"
   },
   en: {
@@ -84,7 +84,7 @@ export const BC_I18N = {
     aboutTitle: "BOSSCAR",
     aboutEpithet: "— a harmony of luxury and perfection",
     aboutBody: "Bosscar began on 24 March 2022 as a small dream. A year and a half later — on 8 October 2023 — we opened the doors of our own garage.\nSince then more than 1,000 cars have passed through our hands and nearly 50 clients have chosen us as their regular studio. Because we treat every car as if it were our own.",
-    servicesTitle: "IN EVERY DETAIL — LOVE",
+    servicesTitle: "IN EVERY DETAIL -LOVE",
     servicesSub: "Dive into a world of luxury with detailing packages tailored to your car's unique needs.",
     services: [
       { name: "Interior detailing", desc: "Care for your car with a thorough hand wash and wax coating." },
@@ -111,7 +111,7 @@ export const BC_I18N = {
     ctaLink: "Leave request",
     footerTag: "Feel the prestige of a car cared for at a professional level — elegance and perfection in every detail.",
     footerColA: ["Website", "Services", "Pricing", "About"],
-    footerColB: ["Write an email", "Facebook", "Instagram", "Twitter", "Youtube"],
+    footerColB: ["Write an email", "Instagram", "Telegram", "Youtube"],
     copyright: "Bosscar © 2026"
   }
 };
