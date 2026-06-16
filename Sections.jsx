@@ -6,7 +6,7 @@ const TG_USERNAME = "bosscaruz";
 
 // Footer B-ustun (footerColB) tartibiga mos real havolalar.
 const FOOTER_COL_B_LINKS = [
-  "mailto:salom@bosscar.uz",                       // 0 — Email yozing
+  "mailto:bosscaruz@gmail.com",                       // 0 — Email yozing
   "https://www.instagram.com/bosscargarage.uz",    // 1 — Instagram
   "https://t.me/bosscaruz",                        // 2 — Telegram
   "https://www.youtube.com/@bosscaruz",            // 3 — Youtube
