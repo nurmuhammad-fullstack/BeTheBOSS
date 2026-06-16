@@ -1,4 +1,4 @@
-import React, { useState as useState1, useEffect as useEffect1, useRef as useRef1 } from 'react';
+import React, { useState as useState1 } from 'react';
 import { useViewport, GOLD_TEXT } from './NavHero';
 
 // Har bir xizmatga mos rasm (services tartibiga ko'ra — uz/ru/en bir xil tartibda)
@@ -112,91 +112,18 @@ function ServiceCard({ img, name, desc, more, w }) {
   );
 }
 
-/* ── Rail nav button — container tashqarisida, bordersiz chevron ── */
-function RailBtn({ dir, disabled, onClick, top }) {
-  return (
-    <button onClick={onClick} disabled={disabled} aria-label={dir} style={{
-      position: "absolute", top, [dir]: -46, transform: "translateY(-50%)", zIndex: 6,
-      width: 32, height: 48, border: "none", background: "transparent", padding: 0,
-      color: disabled ? "rgba(255,255,255,.25)" : "var(--gold)",
-      cursor: disabled ? "default" : "pointer",
-      display: "flex", alignItems: "center", justifyContent: "center",
-      opacity: disabled ? .4 : 1, transition: "color .25s, opacity .25s",
-    }}
-      onMouseEnter={(e) => { if (!disabled) e.currentTarget.style.color = "var(--gold-300)"; }}
-      onMouseLeave={(e) => { if (!disabled) e.currentTarget.style.color = "var(--gold)"; }}
-    >
-      <span style={{ fontSize: 42, lineHeight: 1, fontWeight: 400 }}>
-        {dir === "left" ? "‹" : "›"}
-      </span>
-    </button>
-  );
-}
-
-/* ── Services section — horizontal drag-slider (Block 3) ── */
+/* ── Services section — uzluksiz (to'xtamas) full-width marquee ── */
 function Services({ t }) {
   const { isMobile } = useViewport();
-  const cardW = isMobile ? 260 : 320;
-  const gap   = isMobile ? 18  : 24;
-  const railRef  = useRef1(null);
-  const pausedRef = useRef1(false);   // hover yoki drag paytida auto-scroll to'xtaydi
-  const [atStart, setAtStart] = useState1(true);
-  const [atEnd,   setAtEnd]   = useState1(false);
-
-  const updateEdges = () => {
-    const el = railRef.current; if (!el) return;
-    setAtStart(el.scrollLeft <= 1);
-    setAtEnd(el.scrollLeft >= el.scrollWidth - el.clientWidth - 1);
-  };
-
-  // Auto-scroll — haqiqiy scrollLeft manba sifatida (drag bilan urishmaydi),
-  // hover/drag paytida pauza qiladi.
-  useEffect1(() => {
-    const el = railRef.current; if (!el) return;
-    let raf, dir = 1;
-    const SPEED = 0.5;
-    const tick = () => {
-      const max = el.scrollWidth - el.clientWidth;
-      if (!pausedRef.current && max > 0) {
-        let next = el.scrollLeft + dir * SPEED;
-        if (next >= max) { next = max; dir = -1; }
-        else if (next <= 0) { next = 0; dir = 1; }
-        el.scrollLeft = next;
-        updateEdges();
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, []);
-
-  useEffect1(() => { updateEdges(); }, []);
-
-  const page = (dir) => {
-    const el = railRef.current; if (!el) return;
-    el.scrollBy({ left: dir * (cardW + gap) * (isMobile ? 1 : 2), behavior: "smooth" });
-  };
-
-  // Drag-to-scroll
-  const drag = useRef1({ down: false, x: 0, sl: 0, moved: false });
-  const onDown = (e) => { const el = railRef.current; pausedRef.current = true; drag.current = { down: true, x: e.pageX, sl: el.scrollLeft, moved: false }; };
-  const onMove = (e) => {
-    if (!drag.current.down) return;
-    const el = railRef.current; const dx = e.pageX - drag.current.x;
-    if (Math.abs(dx) > 4) drag.current.moved = true;
-    el.scrollLeft = drag.current.sl - dx;
-    updateEdges();
-  };
-  const onUp = () => { drag.current.down = false; };
-
-  // Wrapper hover: pauza/davom
-  const onZoneEnter = () => { pausedRef.current = true; };
-  const onZoneLeave = () => { drag.current.down = false; pausedRef.current = false; };
-
-  const arrowTop = (cardW * 0.78) / 2;   // strelkani rasm balandligining o'rtasiga
+  const cardW = isMobile ? 264 : 340;
+  const gap   = isMobile ? 20  : 48;
+  // Seamless loop uchun xizmatlarni ikki marta render qilamiz
+  const loop = [...t.services, ...t.services];
+  // Bir nusxa kengligi -> animatsiya davomiyligi (~70px/s tezlik)
+  const dur = Math.max(20, Math.round((t.services.length * (cardW + gap)) / 70));
 
   return (
-    <section style={{ padding: isMobile ? "50px 0 90px" : "80px 0 110px", position: "relative" }}>
+    <section style={{ padding: isMobile ? "50px 0 90px" : "80px 0 110px", position: "relative", overflow: "hidden" }}>
       {/* Header */}
       <div style={{
         maxWidth: 1180, margin: "0 auto",
@@ -206,7 +133,7 @@ function Services({ t }) {
         justifyContent: "space-between",
         alignItems: isMobile ? "flex-start" : "center",
         gap: isMobile ? 16 : 56,
-        marginBottom: isMobile ? 24 : 32,
+        marginBottom: isMobile ? 30 : 48,
       }}>
         <div style={{ flex: isMobile ? "none" : "0 0 auto" }}>
           <h2 style={{
@@ -226,48 +153,25 @@ function Services({ t }) {
         </p>
       </div>
 
-      {/* Slider container with same max-width and padding as header */}
-      <div style={{
-        maxWidth: 1180, margin: "0 auto",
-        padding: isMobile ? "0 22px" : "0 56px",
-      }}>
-        {/* Relative zone — rail + chetidagi strelkalar */}
-        <div
-          style={{ position: "relative" }}
-          onMouseEnter={onZoneEnter}
-          onMouseLeave={onZoneLeave}
-        >
-          {/* Drag-to-scroll rail */}
-          <div
-            ref={railRef}
-            onScroll={updateEdges}
-            onMouseDown={onDown} onMouseMove={onMove} onMouseUp={onUp}
-            style={{
-              display: "flex", gap, overflowX: "auto",
-              scrollbarWidth: "none", msOverflowStyle: "none",
-              cursor: "grab",
-            }}
-            onClickCapture={(e) => { if (drag.current.moved) { e.stopPropagation(); e.preventDefault(); } }}
-          >
-            {t.services.map((s, i) => (
-              <div key={i}>
+      {/* Container ichida uzluksiz marquee — chetlarida kartalar shaffoflashib
+         (korinar-korinmas) container tagiga kirib ketadi, hover'da to'xtaydi */}
+      <div style={{ maxWidth: 1180, margin: "0 auto", padding: isMobile ? "0 22px" : "0 56px" }}>
+        <div className="bc-marquee" style={{
+          WebkitMaskImage: "linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%)",
+          maskImage: "linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%)",
+        }}>
+          <div className="bc-marquee-track" style={{ '--bc-dur': `${dur}s` }}>
+            {loop.map((s, i) => (
+              <div key={i} aria-hidden={i >= t.services.length}
+                style={{ flex: `0 0 ${cardW}px`, marginRight: gap }}>
                 <ServiceCard img={SERVICE_IMGS[i % SERVICE_IMGS.length]} name={s.name} desc={s.desc} more={t.more} w={cardW} />
               </div>
             ))}
-            <div style={{ flex: "0 0 1px" }} />
           </div>
-
-          {/* Chetidagi strelkalar — faqat desktopda */}
-          {!isMobile && (
-            <>
-              <RailBtn dir="left"  top={arrowTop} disabled={atStart} onClick={() => page(-1)} />
-              <RailBtn dir="right" top={arrowTop} disabled={atEnd}   onClick={() => page(1)} />
-            </>
-          )}
         </div>
       </div>
     </section>
   );
 }
 
-export { About, Services, ServiceCard, SERVICE_IMGS, RailBtn };
+export { About, Services, ServiceCard, SERVICE_IMGS };

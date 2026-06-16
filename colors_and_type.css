@@ -102,3 +102,20 @@ body {
 .bc-small{ font-family: var(--font-ui); font-size: var(--small-size); line-height: var(--small-lh); color: var(--fg-dim); }
 .bc-label{ font-family: var(--font-mono); font-size: var(--label-size); line-height: var(--label-lh); color: var(--fg); letter-spacing: .02em; }
 .bc-script { font-family: var(--font-script); color: var(--gold-300); }
+
+/* ── Service cards — uzluksiz (to'xtamas) marquee ── */
+@keyframes bc-marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+.bc-marquee { overflow: hidden; }
+.bc-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: bc-marquee var(--bc-dur, 50s) linear infinite;
+  will-change: transform;
+}
+.bc-marquee:hover .bc-marquee-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .bc-marquee-track { animation: none; }
+}
