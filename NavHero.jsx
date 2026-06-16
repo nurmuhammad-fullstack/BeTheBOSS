@@ -168,11 +168,11 @@ function Nav({ t, lang, setLang }) {
       {isMobile && (
         <button onClick={() => setMenu(true)} aria-label="Menu" style={{
           justifySelf: "end", width: 44, height: 44,
-          background: "transparent", border: "1px solid rgba(255,255,255,.5)", color: "#fff",
+          background: "transparent", border: "none", color: "#fff",
           display: "flex", alignItems: "center", justifyContent: "center",
           cursor: "pointer", padding: 0,
         }}>
-          <span style={{ fontSize: 24, color: "#fff", lineHeight: 1, fontWeight: 700 }}>&#9776;</span>
+          <span style={{ fontSize: 26, color: "#fff", lineHeight: 1, fontWeight: 700 }}>&#9776;</span>
         </button>
       )}
 
@@ -191,24 +191,24 @@ function Nav({ t, lang, setLang }) {
           }}>
             <Logo size={1.1} />
             <button onClick={() => setMenu(false)} aria-label="Close" style={{
-              background: "transparent", border: "1px solid rgba(255,255,255,.5)", color: "#fff",
+              background: "transparent", border: "none", color: "#fff",
               width: 44, height: 44, display: "flex", alignItems: "center",
               justifyContent: "center", cursor: "pointer", padding: 0,
             }}>
-              <span style={{ fontSize: 22, color: "#fff", lineHeight: 1, fontWeight: 700 }}>×</span>
+              <span style={{ fontSize: 30, color: "#fff", lineHeight: 1, fontWeight: 400 }}>×</span>
             </button>
           </div>
 
           <nav style={{
             flex: 1, display: "flex", flexDirection: "column",
-            justifyContent: "center", padding: "0 32px",
+            justifyContent: "flex-start", padding: "28px 28px 0",
           }}>
             {t.nav.map((n, i) => (
               <button key={i} onClick={() => scrollTo(NAV_IDS[i])} style={{
-                fontFamily: "var(--font-ui)", fontSize: 18, fontWeight: 500,
+                fontFamily: "var(--font-ui)", fontSize: 22, fontWeight: 600,
                 color: "#fff", background: "none", border: "none",
-                textAlign: "left", padding: "14px 0",
-                borderBottom: "1px solid rgba(255,255,255,.07)",
+                textAlign: "left", padding: "20px 0",
+                borderBottom: "1px solid rgba(255,255,255,.08)",
                 cursor: "pointer", transition: "color .25s",
               }}
                 onMouseEnter={(e) => e.currentTarget.style.color = "var(--gold)"}
@@ -225,13 +225,12 @@ function Nav({ t, lang, setLang }) {
           <div style={{ padding: "0 22px 40px" }}>
             <a href={telHref(t.phone)} style={{
               display: "flex", alignItems: "center", justifyContent: "center",
-              gap: 12, height: 62, borderRadius: 14,
-              border: "1px solid rgba(255,255,255,.5)",
+              height: 60, borderRadius: 14,
+              border: "1px solid rgba(255,255,255,.22)",
               background: "transparent", color: "#fff", textDecoration: "none",
-              fontFamily: "var(--font-ui)", fontSize: 16, fontWeight: 600,
+              fontFamily: "var(--font-mono)", fontSize: 17, fontWeight: 600,
               letterSpacing: ".02em",
             }}>
-              <i data-lucide="phone" style={{ width: 20, height: 20, color: "#fff" }}></i>
               {t.phone}
             </a>
           </div>
