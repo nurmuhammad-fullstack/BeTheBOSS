@@ -242,9 +242,9 @@ function Nav({ t, lang, setLang }) {
 
 /* ════════════════════════════════════════════════════════
    HERO
-   Car: 1603 × 385 px (gold sports car, front faces LEFT)
-   baloon1.png = front (left) wheel
-   baloon2.png = rear  (right) wheel
+   Car: 1536 × 1024 px (gold sports car, front faces LEFT)
+   baloon1.png = rear  (left) wheel
+   baloon2.png = front (right) wheel
    Scroll down → car drifts LEFT,  wheels spin CW
    Scroll up   → car drifts RIGHT, wheels spin CCW
 ════════════════════════════════════════════════════════ */
@@ -252,17 +252,19 @@ function Nav({ t, lang, setLang }) {
 const DRIFT_FACTOR  = 0.68;
 const WHEEL_RADIUS  = 50;
 const RAD_TO_DEG    = 180 / Math.PI;
-const CAR_ASPECT    = "1603 / 385";           // exact PNG dimensions
+const CAR_ASPECT    = "1536 / 1024";           // exact PNG dimensions
 
-/* Wheel centres as % of car image (1603×385)
-   Car faces RIGHT → rear arch on LEFT (x≈17%), front arch on RIGHT (x≈75%)
-   Rear  wheel (LEFT,  large arch): x≈17%, y≈82%
-   Front wheel (RIGHT, small arch): x≈75%, y≈80%          */
+/* Balloon centres as % of car image (1536×1024)
+   baloon1.png left edge is 124px from car left, bottom edge is 246px above car bottom
+   baloon2.png right edge is 48px from car right, bottom edge is 239px above car bottom
+   Converted to center coordinates for translate(-50%, -50%):
+   baloon1 center ≈ 21.1% x, 56.4% y
+   baloon2 center ≈ 83.9% x, 57.1% y */
 const WHEELS = [
-  { left: "20%", top: "82%", src: "assets/baloon1.png" },  // rear  (left)
-  { left: "82%", top: "80%", src: "assets/baloon2.png" },  // front (right)
+  { left: "21.1%", top: "56.4%", src: "assets/baloon1.png" },  // rear  (left)
+  { left: "83.9%", top: "57.1%", src: "assets/baloon2.png" },  // front (right)
 ];
-const WHEEL_SIZE = "18%"; // diameter as % of car container width
+const WHEEL_SIZE = "26%"; // diameter as % of car container width
 
 /* ── Gold sparkle canvas hook ── */
 function useSparkleCanvas(canvasRef) {
@@ -381,7 +383,7 @@ function Hero({ t }) {
     let ticking = false;
     let prevY = window.scrollY || document.documentElement.scrollTop || 0;
     let angle = 0;
-    const maxDrift  = isMobile ? -120 : -420;
+    const maxDrift  = isMobile ? -240 : -840;
     const driftFact = isMobile ? 0.32 : DRIFT_FACTOR;
 
     const apply = () => {
@@ -406,7 +408,7 @@ function Hero({ t }) {
   /* Sparkle canvas */
   useSparkleCanvas(canvasRef);
 
-  const carWidth = isMobile ? "min(90%, 420px)" : "min(84%, 1040px)";
+  const carWidth = isMobile ? "min(90%, 760px)" : "min(72%, 1200px)";
 
   /* Wheel renderer — elementlar ref orqali to'planadi, aylanish JS bilan beriladi */
   const renderWheel = (w, key) => (
@@ -484,7 +486,7 @@ function Hero({ t }) {
       <div ref={carRef} style={{
         position: "absolute",
         left: "50%",
-        bottom: isMobile ? "18%" : "10%",
+        bottom: isMobile ? "12%" : "-6%",
         top:    isMobile ? "auto" : "auto",
         width:  carWidth,
         transform: "translateX(-50%)",
