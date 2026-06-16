@@ -3,7 +3,7 @@ import React from 'react'
 import App from '../app'
 
 const SITE_URL = 'https://bosscar.uz'
-const OG_IMAGE = `${SITE_URL}/assets/the_boss_gallery_1.png`
+const OG_IMAGE = `${SITE_URL}/og.jpg`
 const TITLE = 'Bosscar — Avto Detailing Studiyasi Toshkent | Polirovka, Keramika, Tonirovka'
 const DESCRIPTION =
   "Bosscar — Toshkentdagi premium avto detailing studiyasi. Polirovka, keramika qoplama, tonirovka, kimyoviy tozalash, interyer detailing va himoya plyonkasi. Har bir tafsilotda mukammallik. ☎ +998 200-200-200"

@@ -261,8 +261,8 @@ const CAR_ASPECT    = "1536 / 1024";           // exact PNG dimensions
    baloon1 center ≈ 21.1% x, 56.4% y
    baloon2 center ≈ 83.9% x, 57.1% y */
 const WHEELS = [
-  { left: "21.1%", top: "56.4%", src: "assets/baloon1.png" },  // rear  (left)
-  { left: "83.9%", top: "57.1%", src: "assets/baloon2.png" },  // front (right)
+  { left: "21.1%", top: "56.4%", src: "assets/baloon1.webp" },  // rear  (left)
+  { left: "83.9%", top: "57.1%", src: "assets/baloon2.webp" },  // front (right)
 ];
 const WHEEL_SIZE = "26%"; // diameter as % of car container width
 
@@ -500,7 +500,7 @@ function Hero({ t }) {
           {WHEELS.map((w, i) => renderWheel(w, `w${i}`))}
 
           {/* Car body PNG */}
-          <img src="assets/car.png" alt="Bosscar"
+          <img src="assets/car.webp" alt="Bosscar"
             style={{
               position: "absolute", inset: 0,
               width: "100%", height: "100%",
@@ -532,7 +532,7 @@ function Hero({ t }) {
               position: "absolute", top: 0, left: 0,
             }}>
               {WHEELS.map((w, i) => renderWheel(w, `wr${i}`))}
-              <img src="assets/car.png" alt="" style={{
+              <img src="assets/car.webp" alt="" style={{
                 position: "absolute", inset: 0,
                 width: "100%", height: "100%",
                 objectFit: "contain", zIndex: 2,

@@ -2,11 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useViewport } from './NavHero';
 
 const GALLERY_IMAGES = [
-  "assets/the_boss_gallery_1.png",
-  "assets/the_boss_gallery_2.png",
-  "assets/the_boss_gallery_3.png",
-  "assets/the_boss_gallery_4.png",
-  "assets/the_boss_gallery_5.png",
+  "assets/the_boss_gallery_1.webp",
+  "assets/the_boss_gallery_2.webp",
+  "assets/the_boss_gallery_3.webp",
+  "assets/the_boss_gallery_4.webp",
+  "assets/the_boss_gallery_5.webp",
 ];
 
 /* ── Gold frame bracket (image burchagini ramkalaydi, biroz tashqarida) ── */

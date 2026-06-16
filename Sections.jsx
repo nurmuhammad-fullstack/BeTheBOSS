@@ -48,7 +48,7 @@ function WhyUs({ t, onOpenModal }) {
             {t.whyTitle}
           </h2>
           <div style={{ position: "relative", background: "#000" }}>
-            <img src="assets/hero-car.png" alt="" style={{
+            <img src="assets/hero-car.webp" alt="" style={{
               width: "100%", display: "block",
               filter: "none",
               background: "#000",
@@ -322,7 +322,7 @@ function CTA({ t, onOpenModal }) {
         display: "flex",
         alignItems: isMobile ? "flex-end" : "center",
       }}>
-        <img src="assets/cta-car.png" alt="" style={{
+        <img src="assets/cta-car.webp" alt="" style={{
           position: "absolute", inset: 0, width: "100%", height: "100%",
           objectFit: "cover", opacity: isMobile ? .3 : .42,
         }} />

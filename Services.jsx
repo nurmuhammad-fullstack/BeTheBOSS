@@ -3,13 +3,13 @@ import { useViewport, GOLD_TEXT } from './NavHero';
 
 // Har bir xizmatga mos rasm (services tartibiga ko'ra — uz/ru/en bir xil tartibda)
 const SERVICE_IMGS = [
-  "img2.jpg", // 0 — Kimyoviy tozalash / Химчистка        (Ximchistka salona)
-  "img1.jpg", // 1 — Tonirovka                            (Tanirovka)
-  "img3.jpg", // 2 — Deteyling yuvish                     (deteling moyka)
-  "img4.jpg", // 3 — Polirovka                            (Palirovka kuzova)
-  "img6.jpg", // 4 — Himoya plyonkasi                     (plenka na kuzov)
-  "img7.jpg", // 5 — Interyer detailing                   (plenka dlya salona)
-  "img5.jpg", // 6 — Keramika qoplamasi                   (keramicheskiy pokritiye)
+  "img2.webp", // 0 — Kimyoviy tozalash / Химчистка        (Ximchistka salona)
+  "img1.webp", // 1 — Tonirovka                            (Tanirovka)
+  "img3.webp", // 2 — Deteyling yuvish                     (deteling moyka)
+  "img4.webp", // 3 — Polirovka                            (Palirovka kuzova)
+  "img6.webp", // 4 — Himoya plyonkasi                     (plenka na kuzov)
+  "img7.webp", // 5 — Interyer detailing                   (plenka dlya salona)
+  "img5.webp", // 6 — Keramika qoplamasi                   (keramicheskiy pokritiye)
 ];
 
 /* ── About section ── */
@@ -26,7 +26,7 @@ function About({ t }) {
     }}>
       <div style={{ flex: isMobile ? "none" : "0 0 360px", width: isMobile ? "100%" : "auto", position: "relative", padding: isMobile ? 18 : 22 }}>
         <div style={{ position: "relative", borderRadius: 20, overflow: "hidden" }}>
-          <img src="assets/about-car.jpg" alt="About Bosscar" style={{
+          <img src="assets/about-car.webp" alt="About Bosscar" style={{
             width: "100%",
             height: isMobile ? 300 : 460,
             objectFit: "cover",
