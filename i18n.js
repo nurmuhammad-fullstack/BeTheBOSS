@@ -6,8 +6,8 @@ export const BC_I18N = {
     heroKicker: "Be the BOSS",
     heroSub: "Professional darajada parvarishlangan avtomobilning nufuzini his eting — har bir tafsilotda nafosat va mukammallik.",
     aboutTitle: "BOSSCAR",
-    aboutEpithet: "— hashamat va mukammallik uyg'unligi",
-    aboutBody: "Bosscar 2022-yil 24-martda kichik orzudan boshlandi. Bir yarim yildan so'ng — 2023-yil 8-oktabrda esa o'z garajimiz eshiklarini ochdi.\nO'shandan beri 1000 dan ortiq avtomobil bizning qo'limizdan o'tdi va 50 ga yaqin mijoz bizni doimiy tanladi. Chunki biz har bir avtomobilga go'yo o'zimiznikidek munosabatda bo'lamiz.",
+    aboutEpithet: "— bu yerda mashinalar so‘zlardan balandroq gapiradi.",
+    aboutBody: "Biz shunchaki surat joylamaymiz — xarakterga ega mashinalarni namoyish qilamiz. Bu yerda eksklyuziv avtomobillar, serob raqamlar va har bir kadri yuragingni urdiradigan kontent bor.\nBu go‘zallik ortida — bizning afsonaviy BOSSCAR garage. Bu joyda mashinalar yuvilmaydi — ularga hurmat bilan muomala qilinadi. Har bir polirovka, har bir tozalash — filtrlarsiz darajada mukammal.",
     servicesTitle: "HAR BIR TAFSILOTDA -SEVGI",
     servicesSub: "Avtomobilingizning o'ziga xos ehtiyojlariga moslashtirilgan maxsus detailing paketlari bilan hashamat olamiga sho'ng'ing.",
     services: [

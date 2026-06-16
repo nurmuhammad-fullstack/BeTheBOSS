@@ -41,8 +41,8 @@ function WhyUs({ t, onOpenModal }) {
         {/* Left: image + title */}
         <div style={{ flex: isMobile ? "none" : "0 0 48%", width: isMobile ? "100%" : "auto", background: "#000" }}>
           <h2 style={{
-            margin: "0 0 28px", fontFamily: "var(--font-script)",
-            fontSize: isMobile ? 26 : 34,
+            margin: "0 0 28px", fontFamily: "var(--font-brand)", fontWeight: 900,
+            fontSize: isMobile ? 28 : 42, letterSpacing: "-.03em",
             ...GOLD_TEXT, lineHeight: 1.25,
           }}>
             {t.whyTitle}
@@ -241,8 +241,8 @@ function Contact({ t }) {
     <section style={{ padding: isMobile ? "70px 22px 80px" : "90px 56px 100px", textAlign: "center", background: "#000" }}>
       <h2 style={{
         margin: isMobile ? "0 0 36px" : "0 0 56px",
-        fontFamily: "var(--font-script)",
-        fontSize: isMobile ? 32 : 46,
+        fontFamily: "var(--font-brand)", fontWeight: 900, letterSpacing: "-.03em",
+        fontSize: isMobile ? 36 : 54,
         ...GOLD_TEXT,
       }}>
         {t.contact?.title || t.contactTitle}
@@ -333,16 +333,16 @@ function CTA({ t, onOpenModal }) {
             : "linear-gradient(90deg, #0b0b0d 18%, rgba(11,11,13,.55) 55%, rgba(11,11,13,.1))",
         }} />
 
-        {/* Corner brackets */}
+        {/* Corner brackets — dumaloq burchakli */}
         <div style={{
-          position: "absolute", top: 22, left: 22, width: 30, height: 30,
+          position: "absolute", top: 22, left: 22, width: 34, height: 34,
           borderTop: "1px solid var(--gold-700)", borderLeft: "1px solid var(--gold-700)",
-          pointerEvents: "none",
+          borderTopLeftRadius: 16, pointerEvents: "none",
         }} />
         <div style={{
-          position: "absolute", bottom: 22, right: 22, width: 30, height: 30,
+          position: "absolute", bottom: 22, right: 22, width: 34, height: 34,
           borderBottom: "1px solid var(--gold-700)", borderRight: "1px solid var(--gold-700)",
-          pointerEvents: "none",
+          borderBottomRightRadius: 16, pointerEvents: "none",
         }} />
 
         {/* Content */}
@@ -352,8 +352,8 @@ function CTA({ t, onOpenModal }) {
           maxWidth: isMobile ? "100%" : 600,
         }}>
           <h2 style={{
-            margin: 0, fontFamily: "var(--font-head)",
-            fontSize: isMobile ? 27 : 40,
+            margin: 0, fontFamily: "var(--font-brand)", fontWeight: 900,
+            fontSize: isMobile ? 30 : 46, letterSpacing: "-.03em",
             ...GOLD_TEXT, lineHeight: 1.18,
           }}>
             {t.ctaTitle}

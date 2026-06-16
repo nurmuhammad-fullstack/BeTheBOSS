@@ -463,8 +463,9 @@ function Hero({ t }) {
           {/* BOSSCAR — DETAILING STUDIO */}
         </p>
         <h1 style={{
-          fontFamily: "var(--font-display)",
-          fontSize: "clamp(52px, 9.5vw, 106px)",
+          fontFamily: "var(--font-brand)", fontWeight: 900,
+          fontSize: "clamp(58px, 10.8vw, 124px)",
+          letterSpacing: "-.03em",
           ...GOLD_TEXT,
           margin: 0, lineHeight: .93,
           whiteSpace: isMobile ? "normal" : "nowrap",

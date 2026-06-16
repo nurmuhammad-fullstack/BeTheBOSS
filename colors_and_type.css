@@ -10,7 +10,7 @@
      · "Iosevka Charon"  → JetBrains Mono   (mono descriptive copy)
      · "Lao Sans Pro"    → League Spartan   (hero subhead)
    ------------------------------------------------------------- */
-@import url('https://fonts.googleapis.com/css2?family=Fugaz+One&family=Jockey+One&family=Lao+Sans+Pro:wght@400;500;600;700&family=League+Spartan:wght@300;400;500;600;700&family=Italiana&family=Jim+Nightshade&family=Hind:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fugaz+One&family=Jockey+One&family=Inter:wght@600;700;800;900&family=Lao+Sans+Pro:wght@400;500;600;700&family=League+Spartan:wght@300;400;500;600;700&family=Italiana&family=Jim+Nightshade&family=Hind:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -69,6 +69,7 @@ body {
   --font-mono:    'Lao Sans Pro', system-ui, sans-serif; /* descriptive copy, phone, meta */
   --font-script:  'Italiana', Georgia, serif;             /* elegant accent ("Get in touch") */
   --font-hand:    'Jim Nightshade', cursive;              /* handwritten micro-accent */
+  --font-brand:   'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif; /* BRAND — barcha sarlavhalar (𝗕𝗢𝗦𝗦 qalin sans, 900 Black) */
 
   /* ---------- Semantic type tokens ---------- */
   --hero-size: 96px;   --hero-lh: 0.95;  --hero-ls: 0.01em;

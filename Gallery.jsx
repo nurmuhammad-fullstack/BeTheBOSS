@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useViewport } from './NavHero';
 
 const GALLERY_IMAGES = [
@@ -8,19 +8,6 @@ const GALLERY_IMAGES = [
   "assets/the_boss_gallery_4.png",
   "assets/the_boss_gallery_5.png",
 ];
-
-/* ── Gold L-corner ornament ── */
-function GoldCorner({ pos }) {
-  const SIZE = 22;
-  const base = { position: "absolute", width: SIZE, height: SIZE, zIndex: 5, pointerEvents: "none" };
-  const map = {
-    tl: { top: 10, left: 10,  borderTop:    "2px solid rgba(255,166,41,.75)", borderLeft:   "2px solid rgba(255,166,41,.75)" },
-    tr: { top: 10, right: 10, borderTop:    "2px solid rgba(255,166,41,.75)", borderRight:  "2px solid rgba(255,166,41,.75)" },
-    bl: { bottom: 10, left: 10,  borderBottom: "2px solid rgba(255,166,41,.75)", borderLeft:   "2px solid rgba(255,166,41,.75)" },
-    br: { bottom: 10, right: 10, borderBottom: "2px solid rgba(255,166,41,.75)", borderRight:  "2px solid rgba(255,166,41,.75)" },
-  };
-  return <div style={{ ...base, ...map[pos] }} />;
-}
 
 /* ── Gold frame bracket (image burchagini ramkalaydi, biroz tashqarida) ── */
 function CornerBracket({ pos }) {
@@ -35,70 +22,86 @@ function CornerBracket({ pos }) {
   return <div style={{ ...base, ...map[pos] }} />;
 }
 
-/*
-  ── MosaicCell ──
-  Each cell renders its image as an absolutely-placed div so the
-  fade-out → swap → fade-in is done on the background layer only,
-  without the cell container reflowing.
-*/
-function MosaicCell({ img, gridColumn, gridRow, corners }) {
+/* ── Mobil karusel — bitta rasm, avtomatik aylanadi, strelka + nuqtalar ── */
+function mobileArrow(side) {
+  return {
+    position: "absolute", top: "50%", [side]: 10, transform: "translateY(-50%)",
+    width: 40, height: 40, borderRadius: "50%", border: "none", padding: 0,
+    background: "rgba(0,0,0,.45)", backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)",
+    color: "var(--gold)", fontSize: 26, lineHeight: 1, cursor: "pointer", zIndex: 4,
+    display: "flex", alignItems: "center", justifyContent: "center",
+  };
+}
+
+function MobileCarousel() {
+  const [idx, setIdx] = useState(0);
+  const count = GALLERY_IMAGES.length;
+  const pausedRef = useRef(false);
+
+  // Avtomatik aylanish (qo'l tegsa to'xtaydi)
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (!pausedRef.current) setIdx((i) => (i + 1) % count);
+    }, 3500);
+    return () => clearInterval(id);
+  }, [count]);
+
+  const go = (d) => setIdx((i) => (i + d + count) % count);
+
   return (
-    <div style={{
-      gridColumn, gridRow,
-      position: "relative",
-      borderRadius: 14,
-      overflow: "hidden",
-      background: "#060708",
-      boxShadow: "0 4px 16px rgba(0,0,0,.45)",
-    }}>
-      <div style={{
-        position: "absolute", inset: 0,
-        backgroundImage: `url(${img})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }} />
-      {corners.map((c) => <GoldCorner key={c} pos={c} />)}
+    <div>
+      <div
+        style={{
+          position: "relative", borderRadius: 18, overflow: "hidden",
+          background: "#0e0e10", boxShadow: "0 18px 50px rgba(0,0,0,.5)",
+        }}
+        onTouchStart={() => { pausedRef.current = true; }}
+        onTouchEnd={() => { pausedRef.current = false; }}
+      >
+        {/* Sirpanuvchi lenta */}
+        <div style={{
+          display: "flex",
+          transform: `translateX(-${idx * 100}%)`,
+          transition: "transform .55s cubic-bezier(.22,1,.36,1)",
+        }}>
+          {GALLERY_IMAGES.map((src, i) => (
+            <div key={i} style={{ flex: "0 0 100%", aspectRatio: "4 / 5" }}>
+              <div style={{
+                width: "100%", height: "100%",
+                backgroundImage: `url(${src})`,
+                backgroundSize: "cover", backgroundPosition: "center",
+              }} />
+            </div>
+          ))}
+        </div>
+
+        <button aria-label="Oldingi" onClick={() => go(-1)} style={mobileArrow("left")}>‹</button>
+        <button aria-label="Keyingi" onClick={() => go(1)} style={mobileArrow("right")}>›</button>
+      </div>
+
+      {/* Nuqta indikatorlar */}
+      <div style={{ display: "flex", justifyContent: "center", gap: 8, marginTop: 18 }}>
+        {GALLERY_IMAGES.map((_, i) => (
+          <button key={i} aria-label={`Rasm ${i + 1}`} onClick={() => setIdx(i)} style={{
+            width: i === idx ? 22 : 8, height: 8, borderRadius: 99,
+            border: "none", padding: 0, cursor: "pointer",
+            background: i === idx ? "var(--gold)" : "rgba(255,255,255,.25)",
+            transition: "all .3s",
+          }} />
+        ))}
+      </div>
     </div>
   );
 }
 
-/*
-  ── Desktop mosaic layout ──
-  Slot 0 : large left  — grid col 1, rows 1–2
-  Slot 1 : top-right-1 — grid col 2, row 1
-  Slot 2 : top-right-2 — grid col 3, row 1
-              <div style={{ flex: '0 0 30%', display: 'flex', flexDirection: 'column', gap: `${gap}px`, alignItems: 'stretch' }}>
-  Slot 4 : bot-right-2 — grid col 3, row 2
-  Cycle: every 1.8 s the NEXT slot in sequence (0→1→2→3→4→0) fades
-  its image out, swaps to the next pool image, then fades back in.
-*/
-const CELL_LAYOUT = [
-  { gridColumn: "1", gridRow: "1 / 3", corners: ["tr", "bl"] },
-  { gridColumn: "2", gridRow: "1",     corners: ["tr", "bl"] },
-  { gridColumn: "3", gridRow: "1",     corners: ["tr", "bl"] },
-  { gridColumn: "2", gridRow: "2",     corners: ["tr", "bl"] },
-  { gridColumn: "3", gridRow: "2",     corners: ["tr", "bl"] },
-];
-
 function FeaturedGallery({ isMobile }) {
-  // Statik tartib — carousel (avtomatik aylanish) olib tashlandi
+  // Desktop uchun statik tartib (mobil <MobileCarousel/> ishlatadi)
   const order = [0, 1, 2, 3, 4];
 
   const gap = isMobile ? 18 : 24;
-  const featuredHeight = isMobile ? 320 : 500;
-  const smallHeight = isMobile ? 130 : 250;
-  const smallWidth = isMobile ? `calc((100% - ${gap}px) / 2)` : '232px';
 
-  const slots = [
-    { left: '0', top: '0', width: '100%', height: `${featuredHeight}px`, radius: 22, z: 2 },
-    { left: '0', top: `calc(${featuredHeight}px + ${gap}px)`, width: smallWidth, height: `${smallHeight}px`, radius: 18, z: 1 },
-    { left: `calc(${smallWidth} + ${gap}px)`, top: `calc(${featuredHeight}px + ${gap}px)`, width: smallWidth, height: `${smallHeight}px`, radius: 18, z: 1 },
-    { left: '0', top: `calc(${featuredHeight}px + ${gap}px + ${smallHeight}px + ${gap}px)`, width: smallWidth, height: `${smallHeight}px`, radius: 18, z: 1 },
-    { left: `calc(${smallWidth} + ${gap}px)`, top: `calc(${featuredHeight}px + ${gap}px + ${smallHeight}px + ${gap}px)`, width: smallWidth, height: `${smallHeight}px`, radius: 18, z: 1 },
-  ];
-
-  const containerHeight = `calc(${featuredHeight}px + ${gap}px + ${smallHeight}px * 2 + ${gap}px)`;
+  // Mobil: bitta rasm, avtomatik aylanuvchi karusel
+  if (isMobile) return <MobileCarousel />;
 
   /* ── Desktop: figma layout — chapda featured rasm (oltin ramka bilan) +
      o'ngda 2 ustun. Har bir rasm o'z tabiiy nisbatida (kesilmaydi). ── */
@@ -153,43 +156,6 @@ function FeaturedGallery({ isMobile }) {
       </div>
     );
   }
-
-  return (
-    <div style={{ position: 'relative', minHeight: containerHeight, overflow: 'hidden' }}>
-      {(
-        // Mobile: keep stacked mosaic behavior
-        GALLERY_IMAGES.map((img, idx) => {
-          const slotIndex = order.indexOf(idx);
-          const slot = slots[slotIndex];
-          return (
-            <div key={img} style={{
-              position: 'absolute',
-              left: slot.left,
-              top: slot.top,
-              width: slot.width,
-              height: slot.height,
-              borderRadius: slot.radius,
-              overflow: 'hidden',
-              boxShadow: slotIndex === 0 ? '0 24px 80px rgba(0,0,0,.42)' : '0 14px 34px rgba(0,0,0,.32)',
-              transition: 'left .85s cubic-bezier(.22,1,.36,1), top .85s cubic-bezier(.22,1,.36,1), width .85s cubic-bezier(.22,1,.36,1), height .85s cubic-bezier(.22,1,.36,1)',
-              zIndex: slot.z,
-              background: '#060708',
-            }}>
-              <div style={{
-                width: '100%',
-                height: '100%',
-                backgroundImage: `url(${img})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                transform: 'scale(1.04)',
-                transition: 'transform .85s cubic-bezier(.22,1,.36,1)',
-              }} />
-            </div>
-          );
-        })
-      )}
-    </div>
-  );
 }
 
 /* ── Gallery section ── */

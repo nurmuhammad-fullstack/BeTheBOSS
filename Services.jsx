@@ -1,7 +1,16 @@
 import React, { useState as useState1, useEffect as useEffect1, useRef as useRef1 } from 'react';
 import { useViewport, GOLD_TEXT } from './NavHero';
 
-const SERVICE_IMGS = ["service-1.png", "gallery-1.png", "gallery-2.png", "gallery-3.png", "cta-car.png"];
+// Har bir xizmatga mos rasm (services tartibiga ko'ra — uz/ru/en bir xil tartibda)
+const SERVICE_IMGS = [
+  "img2.jpg", // 0 — Kimyoviy tozalash / Химчистка        (Ximchistka salona)
+  "img1.jpg", // 1 — Tonirovka                            (Tanirovka)
+  "img3.jpg", // 2 — Deteyling yuvish                     (deteling moyka)
+  "img4.jpg", // 3 — Polirovka                            (Palirovka kuzova)
+  "img6.jpg", // 4 — Himoya plyonkasi                     (plenka na kuzov)
+  "img7.jpg", // 5 — Interyer detailing                   (plenka dlya salona)
+  "img5.jpg", // 6 — Keramika qoplamasi                   (keramicheskiy pokritiye)
+];
 
 /* ── About section ── */
 function About({ t }) {
@@ -37,7 +46,7 @@ function About({ t }) {
         }} />
       </div>
       <div style={{ flex: 1 }}>
-        <h2 style={{ margin: "0 0 6px", fontFamily: "var(--font-display)", fontSize: isMobile ? 26 : 32, ...GOLD_TEXT, lineHeight: 1.2 }}>
+        <h2 style={{ margin: "0 0 6px", fontFamily: "var(--font-brand)", fontWeight: 900, letterSpacing: "-.03em", fontSize: isMobile ? 30 : 40, ...GOLD_TEXT, lineHeight: 1.15 }}>
           {t.aboutTitle}
         </h2>
         <p style={{ margin: "0 0 22px", fontFamily: "var(--font-script)", fontSize: isMobile ? 20 : 24, color: "var(--gold-300)", lineHeight: 1.3 }}>
@@ -201,8 +210,8 @@ function Services({ t }) {
       }}>
         <div style={{ flex: isMobile ? "none" : "0 0 auto" }}>
           <h2 style={{
-            margin: 0, fontFamily: "var(--font-display)",
-            fontSize: isMobile ? 28 : 42, ...GOLD_TEXT,
+            margin: 0, fontFamily: "var(--font-brand)", fontWeight: 900,
+            fontSize: isMobile ? 32 : 50, letterSpacing: "-.03em", ...GOLD_TEXT,
             lineHeight: 1.1, whiteSpace: isMobile ? "normal" : "nowrap",
           }}>
             {t.servicesTitle}
