@@ -1,5 +1,11 @@
-import React, { useState as useState1 } from 'react';
+import React, { useState as useState1, useEffect as useEffect1, useRef as useRef1 } from 'react';
 import { useViewport, GOLD_TEXT } from './NavHero';
+
+// "Batafsil" bosilganda shu Telegram profiliga (xizmat nomi bilan) ochiladi
+const TG_USERNAME = "bosscaruz";
+const tgServiceLink = (serviceName) =>
+  `https://t.me/${TG_USERNAME}?text=` +
+  encodeURIComponent(`Assalomu alaykum! "${serviceName}" xizmati haqida ma'lumot olmoqchiman.`);
 
 // Har bir xizmatga mos rasm (services tartibiga ko'ra — uz/ru/en bir xil tartibda)
 const SERVICE_IMGS = [
@@ -101,26 +107,66 @@ function ServiceCard({ img, name, desc, more, w }) {
       }}>
         {desc}
       </p>
-      <span style={{
-        fontFamily: "var(--font-ui)", fontWeight: 600, fontSize: 15,
-        color: "var(--gold-600)", display: "inline-flex", gap: 8, alignItems: "center",
-      }}>
+      <a
+        href={tgServiceLink(name)}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          fontFamily: "var(--font-ui)", fontWeight: 600, fontSize: 15,
+          color: "var(--gold-600)", display: "inline-flex", gap: 8, alignItems: "center",
+          textDecoration: "none", cursor: "pointer",
+        }}>
         {more}
         <span style={{ transform: hover ? "translateX(6px)" : "none", transition: "transform .3s" }}>→</span>
-      </span>
+      </a>
     </div>
   );
 }
 
-/* ── Services section — uzluksiz (to'xtamas) full-width marquee ── */
+/* ── Services section — uzluksiz auto-scroll + qo'lda surish (drag/touch) ── */
 function Services({ t }) {
   const { isMobile } = useViewport();
   const cardW = isMobile ? 264 : 340;
   const gap   = isMobile ? 20  : 48;
+  const railRef = useRef1(null);
+  const pausedRef = useRef1(false);           // hover/drag/touch paytida to'xtaydi
+  const drag = useRef1({ down: false, x: 0, sl: 0, moved: false });
   // Seamless loop uchun xizmatlarni ikki marta render qilamiz
   const loop = [...t.services, ...t.services];
-  // Bir nusxa kengligi -> animatsiya davomiyligi (~70px/s tezlik)
-  const dur = Math.max(20, Math.round((t.services.length * (cardW + gap)) / 70));
+  const SPEED = isMobile ? 0.35 : 0.45;       // px/kadr — sekin, professional
+
+  // Uzluksiz auto-scroll — haqiqiy scrollLeft, yarmiga yetganda seamless qaytadi
+  useEffect1(() => {
+    const el = railRef.current; if (!el) return;
+    let raf;
+    const step = () => {
+      if (!pausedRef.current && !drag.current.down) {
+        const half = el.scrollWidth / 2;
+        if (half > 0) {
+          el.scrollLeft += SPEED;
+          if (el.scrollLeft >= half) el.scrollLeft -= half;
+        }
+      }
+      raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [SPEED]);
+
+  // Qo'lda surish (sichqoncha + barmoq)
+  const px = (e) => (e.touches ? e.touches[0].pageX : e.pageX);
+  const onDown = (e) => { const el = railRef.current; drag.current = { down: true, x: px(e), sl: el.scrollLeft, moved: false }; };
+  const onMove = (e) => {
+    if (!drag.current.down) return;
+    const el = railRef.current; const dx = px(e) - drag.current.x;
+    if (Math.abs(dx) > 4) drag.current.moved = true;
+    let sl = drag.current.sl - dx;
+    const half = el.scrollWidth / 2;
+    if (sl < 0) sl += half; else if (sl >= half) sl -= half;   // seamless wrap
+    el.scrollLeft = sl;
+  };
+  const onUp = () => { drag.current.down = false; };
 
   return (
     <section style={{ padding: isMobile ? "50px 0 90px" : "80px 0 110px", position: "relative", overflow: "hidden" }}>
@@ -153,21 +199,35 @@ function Services({ t }) {
         </p>
       </div>
 
-      {/* Container ichida uzluksiz marquee — chetlarida kartalar shaffoflashib
-         (korinar-korinmas) container tagiga kirib ketadi, hover'da to'xtaydi */}
-      <div style={{ maxWidth: 1180, margin: "0 auto", padding: isMobile ? "0 22px" : "0 56px" }}>
-        <div className="bc-marquee" style={{
-          WebkitMaskImage: "linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%)",
-          maskImage: "linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%)",
-        }}>
-          <div className="bc-marquee-track" style={{ '--bc-dur': `${dur}s` }}>
-            {loop.map((s, i) => (
-              <div key={i} aria-hidden={i >= t.services.length}
-                style={{ flex: `0 0 ${cardW}px`, marginRight: gap }}>
-                <ServiceCard img={SERVICE_IMGS[i % SERVICE_IMGS.length]} name={s.name} desc={s.desc} more={t.more} w={cardW} />
-              </div>
-            ))}
-          </div>
+      {/* Container ichida — kartalar chetlarida shaffoflashib (korinar-korinmas)
+         tagiga kiradi. Auto-scroll + qo'lda surish (drag/touch), hover'da to'xtaydi */}
+      <div
+        style={{
+          maxWidth: 1180, margin: "0 auto", padding: isMobile ? "0 22px" : "0 56px",
+          WebkitMaskImage: "linear-gradient(to right, transparent 0%, #000 11%, #000 89%, transparent 100%)",
+          maskImage: "linear-gradient(to right, transparent 0%, #000 11%, #000 89%, transparent 100%)",
+        }}
+        onMouseEnter={() => { pausedRef.current = true; }}
+        onMouseLeave={() => { drag.current.down = false; pausedRef.current = false; }}
+      >
+        <div
+          ref={railRef}
+          onMouseDown={onDown} onMouseMove={onMove} onMouseUp={onUp}
+          onTouchStart={() => { pausedRef.current = true; }}
+          onTouchEnd={() => { pausedRef.current = false; }}
+          onClickCapture={(e) => { if (drag.current.moved) { e.stopPropagation(); e.preventDefault(); } }}
+          style={{
+            display: "flex", overflowX: "auto", overflowY: "hidden",
+            scrollbarWidth: "none", msOverflowStyle: "none",
+            cursor: "grab", WebkitOverflowScrolling: "touch",
+          }}
+        >
+          {loop.map((s, i) => (
+            <div key={i} aria-hidden={i >= t.services.length}
+              style={{ flex: `0 0 ${cardW}px`, marginRight: gap }}>
+              <ServiceCard img={SERVICE_IMGS[i % SERVICE_IMGS.length]} name={s.name} desc={s.desc} more={t.more} w={cardW} />
+            </div>
+          ))}
         </div>
       </div>
     </section>
