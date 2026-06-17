@@ -28,6 +28,12 @@ const JSON_LD = {
     addressCountry: 'UZ',
   },
   areaServed: 'Toshkent, Oʻzbekiston',
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 41.331658,
+    longitude: 69.249437,
+  },
+  hasMap: 'https://www.google.com/maps?q=41.331658,69.249437',
   sameAs: [
     'https://www.instagram.com/bosscargarage.uz',
     'https://t.me/bosscaruz',
