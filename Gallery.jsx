@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useViewport } from './NavHero';
 
 const GALLERY_IMAGES = [
-  "assets/the_boss_gallery_1.webp",
+  "assets/the_boss_gallery_1b.webp",
   "assets/the_boss_gallery_2.webp",
   "assets/the_boss_gallery_3b.webp",
   "assets/the_boss_gallery_4b.webp",
