@@ -118,7 +118,7 @@ function FeaturedGallery({ isMobile }) {
           borderRadius: 18, overflow: 'hidden', background: '#0e0e10',
           boxShadow: '0 14px 34px rgba(0,0,0,.32)',
         }}>
-          <img src={GALLERY_IMAGES[imgIdx]} alt="" loading="lazy" style={{
+          <img src={GALLERY_IMAGES[imgIdx]} alt="Bosscar avto detailing ish namunasi — Toshkent" loading="lazy" style={{
             width: '100%', height: 'auto', display: 'block',
           }} />
         </div>

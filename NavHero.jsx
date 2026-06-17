@@ -472,6 +472,7 @@ function Hero({ t }) {
           whiteSpace: isMobile ? "normal" : "nowrap",
         }}>
           {t.heroKicker}
+          <span className="sr-only"> — Bosscar: Toshkentda avto detailing studiyasi. Polirovka, keramika qoplama, tonirovka, kimyoviy tozalash va himoya plyonkasi.</span>
         </h1>
         <p style={{
           fontFamily: "var(--font-ui)", fontSize: isMobile ? 13 : 15,

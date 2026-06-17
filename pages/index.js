@@ -33,6 +33,22 @@ const JSON_LD = {
     'https://t.me/bosscaruz',
     'https://www.youtube.com/@bosscaruz',
   ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Detailing xizmatlari',
+    itemListElement: [
+      'Avtomobil polirovkasi',
+      'Keramika qoplama',
+      'Tonirovka',
+      'Kimyoviy tozalash',
+      'Interyer detailing',
+      'Himoya plyonkasi (PPF)',
+      'Deteyling yuvish',
+    ].map((name) => ({
+      '@type': 'Offer',
+      itemOffered: { '@type': 'Service', name },
+    })),
+  },
 }
 
 export default function Home() {
