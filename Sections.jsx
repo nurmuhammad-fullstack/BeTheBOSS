@@ -48,7 +48,7 @@ function WhyUs({ t, onOpenModal }) {
             {t.whyTitle}
           </h2>
           <div style={{ position: "relative", background: "#000" }}>
-            <img src="assets/hero-car.webp" alt="" style={{
+            <img src="assets/Rectangle 7.png" alt="" style={{
               width: "100%", display: "block",
               filter: "none",
               background: "#000",
