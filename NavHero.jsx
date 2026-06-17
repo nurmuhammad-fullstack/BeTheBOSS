@@ -500,7 +500,7 @@ function Hero({ t }) {
           {WHEELS.map((w, i) => renderWheel(w, `w${i}`))}
 
           {/* Car body PNG */}
-          <img src="assets/hero-car.webp" alt="Bosscar"
+          <img src="assets/Rectangle 7.png" alt="Bosscar"
             style={{
               position: "absolute", inset: 0,
               width: "100%", height: "100%",
@@ -532,7 +532,7 @@ function Hero({ t }) {
               position: "absolute", top: 0, left: 0,
             }}>
               {WHEELS.map((w, i) => renderWheel(w, `wr${i}`))}
-              <img src="assets/hero-car.webp" alt="" style={{
+              <img src="assets/Rectangle 7.png" alt="" style={{
                 position: "absolute", inset: 0,
                 width: "100%", height: "100%",
                 objectFit: "contain", zIndex: 2,
