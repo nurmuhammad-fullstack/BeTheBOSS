@@ -55,7 +55,7 @@ function About({ t }) {
         <h2 style={{ margin: "0 0 6px", fontFamily: "var(--font-brand)", fontWeight: 900, letterSpacing: "-.03em", fontSize: isMobile ? 30 : 40, ...GOLD_TEXT, lineHeight: 1.15 }}>
           {t.aboutTitle}
         </h2>
-        <p style={{ margin: "0 0 22px", fontFamily: "var(--font-script)", fontSize: isMobile ? 20 : 24, color: "var(--gold-300)", lineHeight: 1.3 }}>
+        <p style={{ margin: "0 0 22px", fontFamily: "var(--font-brand)", fontWeight: 300, fontSize: isMobile ? 18 : 22, color: "var(--gold-300)", lineHeight: 1.4 }}>
           {t.aboutEpithet}
         </p>
         {t.aboutBody.split(/\n+/).filter(Boolean).map((paragraph, index) => (
