@@ -4,9 +4,9 @@ import { useViewport } from './NavHero';
 const GALLERY_IMAGES = [
   "assets/the_boss_gallery_1.webp",
   "assets/the_boss_gallery_2.webp",
-  "assets/the_boss_gallery_3.webp",
-  "assets/the_boss_gallery_4.webp",
-  "assets/the_boss_gallery_5.webp",
+  "assets/the_boss_gallery_3b.webp",
+  "assets/the_boss_gallery_4b.webp",
+  "assets/the_boss_gallery_5b.webp",
 ];
 
 /* ── Gold frame bracket (image burchagini ramkalaydi, biroz tashqarida) ── */
