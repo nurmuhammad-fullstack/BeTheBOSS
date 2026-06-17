@@ -411,8 +411,8 @@ function Footer({ t }) {
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <img src="assets/logo.png" alt="Bosscar" style={{ width: 40, height: 40 }} />
             <span style={{
-              fontFamily: "var(--font-display)", fontSize: 22,
-              color: "var(--gold)", letterSpacing: ".07em",
+              fontFamily: "var(--font-brand)", fontWeight: 900, fontSize: 22,
+              letterSpacing: "-.01em", ...GOLD_TEXT,
             }}>
               BOSSCAR
             </span>
