@@ -57,7 +57,7 @@ function WhyUs({ t, onOpenModal }) {
         </div>
 
         {!isMobile && (
-          <div style={{ width: 1, background: "var(--gold)", margin: "20px 0" }} />
+          <div style={{ width: "0.5px", background: "var(--gold)", margin: "20px 0", opacity: 0.25 }} />
         )}
 
         {/* Right: 3 points */}
