@@ -370,7 +370,7 @@ function CTA({ t, onOpenModal }) {
             style={{
               display: "inline-flex", alignItems: "center", gap: 9,
               background: "transparent", border: "none", padding: 0, cursor: "pointer",
-              color: "var(--gold)", fontFamily: "var(--font-script)", fontSize: 19,
+              color: "var(--gold)", fontFamily: "var(--font-sans)", fontWeight: 300, fontSize: 19,
               transition: "color .25s, gap .25s",
             }}
             onMouseEnter={(e) => { e.currentTarget.style.color = "var(--gold-300)"; e.currentTarget.style.gap = "13px"; }}
